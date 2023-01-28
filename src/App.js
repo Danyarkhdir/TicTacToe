@@ -1,7 +1,7 @@
 function App() {
   return (
     <div>
-      <h1>Danyar</h1>
+      <h1>Start Up</h1>
     </div>
   );
 }
