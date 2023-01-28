@@ -1,7 +1,8 @@
+import Header from "./components/Header";
 function App() {
   return (
     <div>
-      <h1>Start Up</h1>
+      <Header title="Tic-Tac-Toe Game"/>
     </div>
   );
 }
