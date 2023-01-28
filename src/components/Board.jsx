@@ -1,27 +1,45 @@
 import { useState } from "react";
 import Square from "./Square";
+import Players from "./Players";
 export default function Board() {
   const [players, setPlayers] = useState(["X", "O"]);
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [turn, setTurn] = useState(players[0]);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   function onSquareClick(i) {
     if (calculateWinner(squares) || squares[i]) return;
+    if (!isGameStarted) return;
+
     const nextSquares = squares.slice();
     nextSquares[i] = turn;
     setSquares(nextSquares);
     turn === players[0] ? setTurn(players[1]) : setTurn(players[0]);
+    setCounter(counter + 1);
   }
   const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Winner: " + winner;
-  } else {
-    status = (turn === players[0] ? "Player 1's" : "Player 2's") + '" Turn :';
-  }
   return (
     <>
-      <Players players={players} onSetPlayers={setPlayers} onTurn={setTurn} />
+      <Players
+        turn={turn}
+        isGameStarted={isGameStarted}
+        startGame={setIsGameStarted}
+        players={players}
+        onSetPlayers={setPlayers}
+        onTurn={setTurn}
+      />
+      {console.log(counter)}
+      {winner !== null ? (
+        <h1 className="winnerAlert">
+          Congratulations {winner === players[0] ? "Player 1" : "Player 2"} is
+          the winner!
+        </h1>
+      ) : counter === 9 ? (
+        <h1 className="winnerAlert">Game Over!</h1>
+      ) : (
+        <></>
+      )}
       <div className="board">
         <div className="board-row">
           <Square
@@ -74,8 +92,16 @@ export default function Board() {
             onSquareClick={() => onSquareClick(8)}
           />
         </div>
-
-        <h1>{status}</h1>
+        <button
+          onClick={() => {
+            setSquares(Array(9).fill(null));
+            setIsGameStarted(false);
+            setCounter(0);
+          }}
+          className="resetBtn"
+        >
+          Reset
+        </button>
       </div>
     </>
   );
@@ -99,34 +125,4 @@ function calculateWinner(squares) {
     }
   }
   return null;
-}
-
-function Players({ players, onSetPlayers, onTurn }) {
-  return (
-    <form className="players">
-      <div>
-        <label className="player1" htmlFor="player1">
-          Player 1 :
-        </label>
-        <input
-          id="player1"
-          name="player1"
-          className="player1"
-          onChange={(e) => {
-            onSetPlayers([e.target.value, players[1]]);
-            onTurn(e.target.value);
-          }}
-        />
-        <label className="player2" htmlFor="player2">
-          Player 2 :{" "}
-        </label>
-        <input
-          name="player2"
-          className="player2"
-          onChange={(e) => onSetPlayers([players[0], e.target.value])}
-        />
-      </div>
-      <input className="startBtn" type="button" value="Start" />
-    </form>
-  );
 }
