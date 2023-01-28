@@ -5,10 +5,33 @@
 }
 
 .title {
-  width: 80%;
+  width: 40%;
   text-align: center;
   margin: 20px auto;
   padding: 25px;
   background-color: green;
   color: white;
+}
+
+.square {
+  background: transparent;
+  border: 2px solid black;
+  float: left;
+  font-weight: bold;
+  font-size: 40px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+}
+
+.board {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.board-row {
+  display: flex;
+  width: 30%;
+  height: 100px;
+  margin: 0 auto;
 }
